@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 
@@ -23,7 +24,7 @@ public class JWTService {
 
     private final SecretKey KEY = Jwts.SIG.HS512.key().build();
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, Map<String, Object> claims) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))

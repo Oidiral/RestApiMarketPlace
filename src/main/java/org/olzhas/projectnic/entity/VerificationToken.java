@@ -16,12 +16,13 @@ public class VerificationToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(
             name = "user_id"
     )
     private User users;
     private LocalDateTime createdAt;
+    private boolean is_Used = false;
     private LocalDateTime confirmedAt;
     private LocalDateTime expiresAt;
 

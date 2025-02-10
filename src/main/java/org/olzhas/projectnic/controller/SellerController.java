@@ -3,7 +3,6 @@ package org.olzhas.projectnic.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.olzhas.projectnic.dto.ProductDto;
-import org.olzhas.projectnic.exception.NotFoundException;
 import org.olzhas.projectnic.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

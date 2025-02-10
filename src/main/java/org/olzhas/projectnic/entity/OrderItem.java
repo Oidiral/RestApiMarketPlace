@@ -7,8 +7,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Builder
 @RequiredArgsConstructor
-public class Order_item {
+@AllArgsConstructor
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +23,4 @@ public class Order_item {
     @Column(nullable = false)
     private int quantity;
     private Double price;
-
-
 }

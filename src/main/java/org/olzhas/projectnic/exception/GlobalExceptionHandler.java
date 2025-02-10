@@ -18,6 +18,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorObject, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorObject> handleBadRequestException(BadRequestException exception) {
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setMessage(exception.getMessage());
+        errorObject.setStatusCode(HttpStatus.BAD_REQUEST.value());
+        errorObject.setTimestamp(new Date());
+        return new ResponseEntity<>(errorObject, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorObject> handleAccessDeniedException(AccessDeniedException exception) {
@@ -35,6 +43,15 @@ public class GlobalExceptionHandler {
         errorObject.setStatusCode(HttpStatus.CONFLICT.value());
         errorObject.setTimestamp(new Date());
         return new ResponseEntity<>(errorObject, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<ErrorObject> handleTokenException(TokenException exception) {
+        ErrorObject errorObject = new ErrorObject();
+        errorObject.setMessage(exception.getMessage());
+        errorObject.setStatusCode(HttpStatus.FORBIDDEN.value());
+        errorObject.setTimestamp(new Date());
+        return new ResponseEntity<>(errorObject, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(IllegalStateException.class)

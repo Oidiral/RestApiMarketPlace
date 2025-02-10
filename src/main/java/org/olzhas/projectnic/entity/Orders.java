@@ -1,18 +1,17 @@
 package org.olzhas.projectnic.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +21,12 @@ public class Orders {
     @ToString.Exclude
     private User user;
     @OneToMany(mappedBy = "orders")
-    private List<Order_item> order_items;
+    private List<OrderItem> orderItems;
     @Enumerated(EnumType.STRING)
     private Status status;
     @Column
-    private Double total_price;
+    private Double totalPrice;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private LocalDateTime date;
 
 }

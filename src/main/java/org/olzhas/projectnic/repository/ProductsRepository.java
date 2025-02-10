@@ -17,8 +17,15 @@ public interface ProductsRepository extends JpaRepository<Product, Long> {
             "AND p.user.id = :sellerId")
     int deleteByProductIdAndSellerId(@Param("productId") Long productId, @Param("sellerId") Long sellerId);
 
+    @Modifying
+    @Query("UPDATE Product p " +
+            "SET p.quantity = p.quantity - :quantity " +
+            "WHERE p.id = :id")
+    void decreaseQuantity(@Param("id") Long productId, @Param("quantity") int quantity);
+
     @Query("SELECT p FROM Product p " +
             "WHERE p.user.id = :userId " +
             "AND p.id = :productId")
     Optional<Product> findByUserIdAndProductId(@Param("userId") Long userId, @Param("productId") Long productId);
+
 }

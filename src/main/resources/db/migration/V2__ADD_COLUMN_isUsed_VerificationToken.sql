@@ -1,0 +1,2 @@
+ALTER TABLE verification_token
+    ADD COLUMN is_used BOOLEAN DEFAULT FALSE NOT NULL;

@@ -8,6 +8,7 @@ import org.olzhas.projectnic.exception.NotFoundException;
 import org.olzhas.projectnic.mapper.UsersMapper;
 import org.olzhas.projectnic.repository.UserRepository;
 import org.olzhas.projectnic.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    @PreAuthorize("authentication.principal.id == #id or hasRole('ROLE_ADMIN')")
     public void deleteUser(long id) {
         if (!userRepository.existsById(id)) {
             log.warn("User with id {} not found", id);

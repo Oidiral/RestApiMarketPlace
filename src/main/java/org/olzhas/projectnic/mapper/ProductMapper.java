@@ -9,12 +9,16 @@ import org.olzhas.projectnic.entity.User;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ProductMapper {
 
-    @Mapping(source = "categoryId", target = "category.id")
-    @Mapping(source = "userId", target = "user")
+    @Mappings({
+            @Mapping(source = "categoryId", target = "category.id"),
+            @Mapping(source = "userId", target = "user")
+    })
     Product toEntity(ProductDto productDto);
 
-    @Mapping(source = "category.id", target = "categoryId")
-    @Mapping(source = "user.id", target = "userId")
+    @Mappings({
+            @Mapping(source = "category.id", target = "categoryId"),
+            @Mapping(source = "user.id", target = "userId")
+    })
     ProductDto toDto(Product product);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

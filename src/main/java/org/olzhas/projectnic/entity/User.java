@@ -46,14 +46,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Orders> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Cart> carts = new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart carts = new Cart();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<VerificationToken> verificationTokens = new ArrayList<>();
+    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private VerificationToken verificationTokens = new VerificationToken();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -88,6 +88,11 @@ public class User implements UserDetails {
         return UserDetails.super.isCredentialsNonExpired();
     }
 
+    @Override
+    public boolean isEnabled() {
+        return isActive;
+    }
+
     @PrePersist
     private void onCreate() {
         createdAt = LocalDateTime.now();
@@ -96,11 +101,6 @@ public class User implements UserDetails {
     @PreUpdate
     private void onUpdate() {
         updatedAt = LocalDateTime.now();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive;
     }
 
 

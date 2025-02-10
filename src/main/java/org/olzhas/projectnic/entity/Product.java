@@ -2,6 +2,8 @@ package org.olzhas.projectnic.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class Product {
 
     @Id
@@ -27,6 +30,9 @@ public class Product {
 
     @Column(nullable = false)
     private Double price;
+
+    @Version
+    private Integer version;
 
     @Column(nullable = false)
     private int quantity;
@@ -50,7 +56,7 @@ public class Product {
     private List<CartItem> cartItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
-    private List<Order_item> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime createdAt;
 

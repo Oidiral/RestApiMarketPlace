@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: marketPlace
     ports:
-      - "666:5432"
+      - "5432:5432"
     volumes:
       - pg_marketPlaceNIC:/var/lib/postgresql/data
     networks:

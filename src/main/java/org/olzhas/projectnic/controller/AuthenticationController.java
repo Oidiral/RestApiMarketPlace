@@ -21,13 +21,13 @@ public class AuthenticationController {
     @PostMapping("/signUp")
     public ResponseEntity<String> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         authenticationServiceImpl.signUp(signUpRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("\"User registered successfully\"",HttpStatus.OK);
     }
 
     @PostMapping("/confirm")
     public ResponseEntity<String> confirm(@RequestParam("token") String token) {
         authenticationServiceImpl.confirmVerificationEmail(token);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Email confirmed successfully",HttpStatus.OK);
     }
 
 

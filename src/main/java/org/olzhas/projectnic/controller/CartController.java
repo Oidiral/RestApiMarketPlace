@@ -14,8 +14,25 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addCart(@RequestParam Long userId,@RequestParam Long productId, @RequestParam int quantity) {
-        cartService.addProductToCart(userId,productId,quantity);
+    public ResponseEntity<String> addCart(@RequestParam Long userId, @RequestParam Long productId, @RequestParam int quantity) {
+        cartService.addProductToCart(userId, productId, quantity);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/remove")
+    ResponseEntity<String> removeProductFromCart(@RequestParam Long userId, @RequestParam Long productId) {
+        cartService.removeProductFromCart(userId, productId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{customerId}")
+    ResponseEntity<String> deleteCart(@PathVariable("customerId") Long customerId) {
+        cartService.clearCart(customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{userId}")
+    ResponseEntity<CartDto> getCartForUser(@PathVariable("userId") Long userId){
+        return ResponseEntity.ok(cartService.getCartForUser(userId));
     }
 }

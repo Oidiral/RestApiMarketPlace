@@ -10,8 +10,8 @@ import org.olzhas.projectnic.exception.NotFoundException;
 import org.olzhas.projectnic.mapper.ProductMapper;
 import org.olzhas.projectnic.repository.CategoryRepository;
 import org.olzhas.projectnic.repository.ProductsRepository;
-import org.olzhas.projectnic.repository.UserRepository;
 import org.olzhas.projectnic.service.ProductService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final UserRepository userRepository;
     private final ProductsRepository productsRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
@@ -50,18 +49,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @PreAuthorize("authentication.principal.id == #userId or hasRole('ROLE_ADMIN')")
     public ProductDto updateProduct(ProductDto productDto, Long userId) {
         log.info("Attempting to update product for user {} in category {}", productDto.getUserId(), productDto.getCategoryId());
         Product product;
-        if (userRepository.isAdmin(userId)) {
-            product = productsRepository.findById(productDto.getId()).orElseThrow(
-                    () -> new NotFoundException("Not found product with id " + productDto.getId())
-            );
-        } else {
-            product = productsRepository.findByUserIdAndProductId(userId, productDto.getId()).orElseThrow(
-                    () -> new NotFoundException("Not found product with id " + productDto.getId())
-            );
-        }
+        product = productsRepository.findByUserIdAndProductId(userId, productDto.getId()).orElseThrow(
+                () -> new NotFoundException("Not found product with id " + productDto.getId())
+        );
         productMapper.partialUpdate(productDto, product);
         productsRepository.save(product);
         log.info("Product updated successfully for user {}", productDto.getUserId());
@@ -71,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
+    @PreAuthorize("authentication.principal.id == #userId or hasRole('ROLE_ADMIN')")
     public void deleteProduct(Long id) {
         Product product = findByProductId(id);
         int rowsAffected = productsRepository.deleteByProductIdAndSellerId(product.getId(), product.getUser().getId());
